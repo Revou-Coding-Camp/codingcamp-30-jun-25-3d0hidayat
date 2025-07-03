@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoFlow - Rekan Aset Digital Anda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300..800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-bg': '#0F0E1F', // Sangat gelap, untuk latar belakang
+                        'dark-card': '#1C1B2E', // Dasar kartu
+                        'dark-border': '#33324E', // Untuk border
+                        'primary-purple': '#8B5CF6', // Ungu utama
+                        'secondary-purple': '#A78BFA', // Ungu sekunder
+                        'accent-cyan': '#22D3EE', // Cyan untuk aksen
+                        'text-light': '#E0E0E0', // Teks terang
+                        'text-dark': '#C0C0C0', // Teks agak gelap
+                        'success-green': '#10B981', // Hijau untuk sukses
+                        'warning-yellow': '#F59E0B', // Kuning untuk peringatan
+                        'error-red': '#EF4444',     // Merah untuk error
+                        'info-blue': '#3B82F6', // Menambahkan warna untuk pop-up informasi
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'], // Font default
+                        heading: ['Oxanium', 'cursive'], // Font untuk judul
+                    },
+                    keyframes: {
+                        'fade-in-up': { // Animasi muncul dari bawah
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        'scale-in': { // Animasi skala masuk
+                            '0%': { opacity: '0', transform: 'scale(0.8)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        },
+                        'border-pulse': { // Animasi denyutan border
+                            '0%, 100%': { 'box-shadow': '0 0 0px var(--tw-shadow-color)' },
+                            '50%': { 'box-shadow': '0 0 15px var(--tw-shadow-color)' },
+                        },
+                        'float': { // Animasi melayang
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'gradient-shift': { // Animasi pergeseran gradien
+                            '0%': { 'background-position': '0% 50%' },
+                            '100%': { 'background-position': '100% 50%' },
+                        },
+                    },
+                    animation: {
+                        'fade-in-up': 'fade-in-up 0.8s ease-out forwards',
+                        'scale-in': 'scale-in 0.8s ease-out forwards',
+                        'border-pulse-purple': 'border-pulse 2s infinite alternate',
+                        'float-slow': 'float 3s ease-in-out infinite',
+                        'gradient-shift-bg': 'gradient-shift 15s ease infinite alternate',
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-dark-bg text-text-light custom-gradient-bg">
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-70 z-[99] hidden opacity-0 transition-opacity duration-300"></div>
+
+    <div id="welcome-modal" class="fixed inset-0 flex items-center justify-center z-[100] hidden opacity-0 scale-90 transition-all duration-300">
+        <div class="bg-dark-card p-8 rounded-lg shadow-2xl max-w-sm w-full text-center border border-primary-purple/30 transform">
+            <h2 class="font-heading text-3xl font-bold text-primary-purple mb-6 animate-scale-in">Selamat Datang di CryptoFlow!</h2>
+            <p class="text-text-light mb-4">Silakan masukkan nama Anda untuk memulai petualangan digital.</p>
+            <input type="text" id="welcome-name-input" placeholder="Nama Anda"
+                   class="w-full px-4 py-3 mb-4 rounded-md bg-gray-700 border border-gray-600 text-text-light
+                          focus:outline-none focus:ring-2 focus:ring-primary-purple transition duration-200 shadow-md">
+            <button id="start-Browse-button" class="bg-primary-purple text-white px-8 py-3 rounded-full hover:bg-purple-700
+                           transition duration-300 transform hover:scale-105 shadow-lg font-semibold tracking-wide">Mulai Jelajahi</button>
+        </div>
+    </div>
+
+    <div id="custom-notification" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-dark-card p-6 rounded-lg shadow-2xl max-w-md w-full text-center border z-[101] hidden opacity-0 scale-90 transition-all duration-300">
+        <h3 id="notification-title" class="font-heading text-2xl font-bold mb-3"></h3>
+        <p id="notification-message" class="text-text-light mb-5 whitespace-pre-line"></p>
+        <button id="notification-ok-button" class="bg-primary-purple text-white px-6 py-2 rounded-md hover:bg-purple-700 transition duration-300">OK</button>
+    </div>
+
+
+    <header class="bg-dark-card shadow-lg sticky top-0 z-50 backdrop-blur-md bg-opacity-80 border-b border-dark-border">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="img/logo_cryptoflow.png" alt="Logo CryptoFlow" class="w-12 h-12 rounded-full animate-spin-slow shadow-md">
+                <span class="font-heading text-3xl font-bold text-primary-purple tracking-wider">CryptoFlow</span>
+            </div>
+            <ul class="hidden md:flex space-x-8">
+                <li><a href="#home" class="text-text-dark hover:text-primary-purple font-medium transition duration-300 transform hover:-translate-y-1 hover:shadow-text glow-on-hover">Beranda</a></li>
+                <li><a href="#profile" class="text-text-dark hover:text-primary-purple font-medium transition duration-300 transform hover:-translate-y-1 hover:shadow-text glow-on-hover">Profil Kami</a></li>
+                <li><a href="#portfolio" class="text-text-dark hover:text-primary-purple font-medium transition duration-300 transform hover:-translate-y-1 hover:shadow-text glow-on-hover">Portofolio</a></li>
+                <li><a href="#message-us" class="text-text-dark hover:text-primary-purple font-medium transition duration-300 transform hover:-translate-y-1 hover:shadow-text glow-on-hover">Hubungi Kami</a></li>
+            </ul>
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-purple text-text-light transition duration-200 hover:bg-dark-border">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-card shadow-lg py-2 border-t border-dark-border">
+            <ul class="flex flex-col items-center space-y-2 py-2">
+                <li><a href="#home" class="block w-full text-center py-2 text-text-dark hover:text-primary-purple font-medium transition duration-300">Beranda</a></li>
+                <li><a href="#profile" class="block w-full text-center py-2 text-text-dark hover:text-primary-purple font-medium transition duration-300">Profil Kami</a></li>
+                <li><a href="#portfolio" class="block w-full text-center py-2 text-text-dark hover:text-primary-purple font-medium transition duration-300">Portofolio</a></li>
+                <li><a href="#message-us" class="block w-full text-center py-2 text-text-dark hover:text-primary-purple font-medium transition duration-300">Hubungi Kami</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 relative z-10">
+
+        <section id="home" class="animated-section relative overflow-hidden bg-gradient-to-br from-dark-card to-dark-bg p-8 md:p-16 rounded-3xl shadow-2xl mb-16 text-center flex flex-col md:flex-row items-center justify-between border border-dark-border animate-fade-in-up">
+            <div class="absolute inset-0 z-0 bg-repeat opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M50 0h50v50H50V0zM0 50h50v50H0V50z\' fill=\'%238b5cf6\' fill-opacity=\'0.1\'%3E%3C/path%3E%3C/svg%3E'); filter: blur(1px);"></div>
+            <div class="relative z-10 text-left md:w-1/2 pr-0 md:pr-12">
+                <h1 class="font-heading text-5xl md:text-6xl font-extrabold mb-4 leading-tight text-white drop-shadow-lg">Halo <span id="user-name" class="typewriter-text text-primary-purple"></span><span class="typewriter-cursor">|</span>,<br>Selamat Datang di CryptoFlow!</h1>
+                <p class="text-xl md:text-2xl opacity-90 mb-8 text-text-light">Rekan Terpercaya Anda dalam Revolusi Aset Digital. Jelajahi masa depan keuangan.</p>
+                <a href="#message-us" class="inline-block bg-primary-purple text-white px-10 py-4 rounded-full hover:bg-purple-700
+                           transition duration-300 transform hover:scale-105 shadow-xl font-semibold tracking-wide
+                           border-2 border-primary-purple hover:border-secondary-purple custom-glow">Mulai Sekarang</a>
+            </div>
+            <div class="relative z-10 md:w-1/2 mt-10 md:mt-0 flex justify-center">
+                <img src="img/hero_banner.png" alt="Banner Hero CryptoFlow" class="rounded-2xl shadow-xl max-w-full h-auto transform transition duration-500 hover:scale-105 border-2 border-primary-purple custom-glow-sm animate-float-slow">
+            </div>
+        </section>
+
+        <section id="profile" class="animated-section bg-dark-card p-8 md:p-12 rounded-3xl shadow-2xl mb-16 border border-dark-border animate-fade-in-up">
+            <h2 class="font-heading text-4xl font-bold text-center text-primary-purple mb-10">Profil Kami</h2>
+            
+            <div class="mb-12 text-center relative">
+                <img src="img/company_banner.png" alt="Banner Perusahaan" class="w-full rounded-2xl shadow-xl mb-6 transform transition duration-500 hover:scale-102 border-2 border-secondary-purple custom-glow-sm">
+                <p class="text-text-light text-lg italic mt-4">"Memberdayakan masa depan finansial Anda melalui solusi kripto yang aman dan inovatif."</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="font-heading text-3xl font-semibold text-primary-purple mb-5 border-b-2 border-primary-purple/50 pb-2">Tentang CryptoFlow</h3>
+                    <p class="text-text-light leading-relaxed mb-6 text-lg">
+                        CryptoFlow adalah perusahaan pelopor di garis depan revolusi mata uang kripto. Didirikan pada tahun 2020, kami mengkhususkan diri dalam menyediakan platform yang aman, efisien, dan mudah digunakan untuk manajemen aset digital, perdagangan, dan solusi keuangan terdesentralisasi (DeFi). Misi kami adalah mendemokratisasi akses ke ekonomi kripto, membuatnya dapat diakses dan aman bagi semua orang, dari investor berpengalaman hingga pendatang baru yang ingin tahu.
+                    </p>
+                    <p class="text-text-light leading-relaxed text-lg">
+                        Dengan tim ahli blockchain, analis keuangan, dan spesialis keamanan siber, CryptoFlow berkomitmen untuk membangun infrastruktur yang kuat dan memberikan layanan yang luar biasa. Kami percaya pada kekuatan transformatif teknologi blockchain dan berdedikasi untuk mendorong masa depan keuangan yang lebih transparan dan adil. Kami terus berkembang untuk memenuhi tuntutan lanskap digital yang berubah dengan cepat.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-heading text-3xl font-semibold text-primary-purple mb-5 border-b-2 border-primary-purple/50 pb-2">Visi & Misi</h3>
+                    <h4 class="font-heading text-2xl font-medium text-text-light mb-3">Visi Kami</h4>
+                    <p class="text-text-light leading-relaxed mb-6 text-lg">
+                        Menjadi platform global terkemuka untuk aset digital, memungkinkan individu dan institusi untuk terlibat secara mulus dengan ekonomi terdesentralisasi dengan keyakinan dan keamanan tertinggi. Kami membayangkan masa depan di mana kebebasan finansial adalah kenyataan universal, didukung oleh inovasi blockchain dan dapat diakses oleh semua.
+                    </p>
+                    <h4 class="font-heading text-2xl font-medium text-text-light mb-3">Misi Kami</h4>
+                    <ul class="list-disc list-inside text-text-light leading-relaxed space-y-3 text-lg">
+                        <li><span class="font-medium text-primary-purple">Inovasi:</span> Terus mengembangkan solusi dan fitur blockchain canggih yang memenuhi kebutuhan komunitas kripto yang berkembang.</li>
+                        <li><span class="font-medium text-primary-purple">Keamanan:</span> Menjaga standar keamanan dan kepatuhan tertinggi untuk melindungi aset dan data pengguna.</li>
+                        <li><span class="font-medium text-primary-purple">Aksesibilitas:</span> Menyediakan antarmuka yang intuitif dan mudah digunakan yang menurunkan hambatan masuk untuk adopsi mata uang kripto.</li>
+                        <li><span class="font-medium text-primary-purple">Edukasi:</span> Memberdayakan pengguna kami dengan pengetahuan dan sumber daya komprehensif tentang blockchain dan aset digital.</li>
+                        <li><span class="font-medium text-primary-purple">Komunitas:</span> Membangun komunitas yang bersemangat dan mendukung yang berkontribusi pada pertumbuhan dan pengembangan ekosistem terdesentralisasi.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="headquarter" class="animated-section bg-dark-card p-8 md:p-12 rounded-3xl shadow-2xl mb-16 border border-dark-border animate-fade-in-up">
+            <h2 class="font-heading text-4xl font-bold text-center text-primary-purple mb-10">Kantor Pusat Global Kami</h2>
+            <div class="flex flex-wrap justify-center gap-10">
+                <div class="text-center group bg-dark-bg p-6 rounded-full flex flex-col items-center justify-center w-52 h-52 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-dark-border hover:border-secondary-purple custom-glow-on-hover">
+                    <img src="img/jakarta.png" alt="Jakarta" class="w-32 h-32 rounded-full object-cover border-4 border-primary-purple mb-4 mx-auto transition-all duration-300 group-hover:scale-110 group-hover:border-secondary-purple">
+                    <p class="font-heading text-2xl font-semibold text-text-light transition duration-300 group-hover:text-primary-purple">Jakarta</p>
+                </div>
+                <div class="text-center group bg-dark-bg p-6 rounded-full flex flex-col items-center justify-center w-52 h-52 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-dark-border hover:border-secondary-purple custom-glow-on-hover">
+                    <img src="img/bandung.png" alt="Bandung" class="w-32 h-32 rounded-full object-cover border-4 border-primary-purple mb-4 mx-auto transition-all duration-300 group-hover:scale-110 group-hover:border-secondary-purple">
+                    <p class="font-heading text-2xl font-semibold text-text-light transition duration-300 group-hover:text-primary-purple">Bandung</p>
+                </div>
+                <div class="text-center group bg-dark-bg p-6 rounded-full flex flex-col items-center justify-center w-52 h-52 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-dark-border hover:border-secondary-purple custom-glow-on-hover">
+                    <img src="img/surabaya.png" alt="Surabaya" class="w-32 h-32 rounded-full object-cover border-4 border-primary-purple mb-4 mx-auto transition-all duration-300 group-hover:scale-110 group-hover:border-secondary-purple">
+                    <p class="font-heading text-2xl font-semibold text-text-light transition duration-300 group-hover:text-primary-purple">Surabaya</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio" class="animated-section bg-dark-card p-8 md:p-12 rounded-3xl shadow-2xl mb-16 border border-dark-border animate-fade-in-up">
+            <h2 class="font-heading text-4xl font-bold text-center text-primary-purple mb-10">Solusi Inovatif Kami</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-dark-bg p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 border-2 border-dark-border transform hover:-translate-y-2 hover:scale-102 custom-glow-on-hover">
+                    <img src="img/wallet_app.png" alt="Aplikasi Dompet Kripto" class="w-full h-48 object-cover rounded-lg mb-4 border border-dark-border">
+                    <h3 class="font-heading text-2xl font-semibold text-secondary-purple mb-3">Aplikasi Dompet Aman</h3>
+                    <p class="text-text-light mb-4 text-md">Aplikasi seluler canggih untuk menyimpan dan mengelola berbagai mata uang kripto dengan aman. Menampilkan autentikasi multi-faktor dan integrasi penyimpanan dingin, memastikan perlindungan aset maksimum.</p>
+                    <a href="#" class="learn-more-btn text-accent-cyan hover:underline font-medium flex items-center justify-end group text-lg"
+                       data-title="Aplikasi Dompet Aman"
+                       data-description="Aplikasi Dompet Aman CryptoFlow adalah aplikasi seluler mutakhir yang dirancang untuk keamanan dan kemudahan penggunaan tertinggi dalam mengelola aset digital Anda. Ini mendukung berbagai mata uang kripto dan menerapkan protokol keamanan terkemuka di industri, termasuk autentikasi multi-faktor (MFA) dan integrasi mulus dengan dompet perangkat keras untuk penyimpanan dingin. Enkripsi kepemilikan kami memastikan kunci pribadi Anda selalu terlindungi, memberi Anda ketenangan pikiran. Audit keamanan rutin dan pembaruan berkelanjutan menjamin perlindungan terhadap ancaman yang muncul.">Pelajari Lebih Lanjut <svg class="w-5 h-5 ml-2 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></a>
+                </div>
+                <div class="bg-dark-bg p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 border-2 border-dark-border transform hover:-translate-y-2 hover:scale-102 custom-glow-on-hover">
+                    <img src="img/defi_staking.png" alt="Platform Staking DeFi" class="w-full h-48 object-cover rounded-lg mb-4 border border-dark-border">
+                    <h3 class="font-heading text-2xl font-semibold text-secondary-purple mb-3">Platform Staking DeFi</h3>
+                    <p class="text-text-light mb-4 text-md">Platform keuangan terdesentralisasi kami memungkinkan pengguna untuk melakukan staking aset kripto mereka dan mendapatkan penghasilan pasif melalui berbagai strategi *yield farming* dengan kontrak pintar yang transparan dan diaudit.</p>
+                    <a href="#" class="learn-more-btn text-accent-cyan hover:underline font-medium flex items-center justify-end group text-lg"
+                       data-title="Platform Staking DeFi"
+                       data-description="Manfaatkan potensi kepemilikan kripto Anda dengan Platform Staking DeFi CryptoFlow yang intuitif. Platform kami menyediakan akses ke pilihan peluang staking dengan hasil tinggi yang dikurasi di berbagai protokol keuangan terdesentralisasi. Semua kontrak pintar diaudit secara ketat untuk memastikan transparansi dan keamanan. Pengguna dapat dengan mudah memantau penghasilan mereka, mengelola aset yang di-staking, dan berpartisipasi dalam kumpulan likuiditas, sambil mempertahankan kontrol penuh atas dana mereka.">Pelajari Lebih Lanjut <svg class="w-5 h-5 ml-2 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></a>
+                </div>
+                <div class="bg-dark-bg p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 border-2 border-dark-border transform hover:-translate-y-2 hover:scale-102 custom-glow-on-hover">
+                    <img src="img/nft_marketplace.png" alt="Pasar NFT" class="w-full h-48 object-cover rounded-lg mb-4 border border-dark-border">
+                    <h3 class="font-heading text-2xl font-semibold text-secondary-purple mb-3">Pasar NFT</h3>
+                    <p class="text-text-light mb-4 text-md">Pasar yang intuitif dan berbiaya rendah untuk membeli, menjual, dan mencetak Non-Fungible Token (NFT) di berbagai blockchain, mendorong kepemilikan digital dan kreativitas.</p>
+                    <a href="#" class="learn-more-btn text-accent-cyan hover:underline font-medium flex items-center justify-end group text-lg"
+                       data-title="Pasar NFT"
+                       data-description="Temukan, buat, dan perdagangkan Non-Fungible Token (NFT) unik di Pasar NFT mutakhir CryptoFlow. Platform kami menawarkan pengalaman mulus bagi seniman untuk mencetak kreasi digital mereka dan bagi kolektor untuk menemukan seni digital langka dan eksklusif, koleksi, dan banyak lagi. Dengan kompatibilitas lintas-blockchain dan biaya transaksi rendah, kami menjadikan kepemilikan digital dapat diakses dan bermanfaat bagi semua orang di ekosistem NFT yang berkembang.">Pelajari Lebih Lanjut <svg class="w-5 h-5 ml-2 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></a>
+                </div>
+                <div class="bg-dark-bg p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 border-2 border-dark-border transform hover:-translate-y-2 hover:scale-102 custom-glow-on-hover">
+                    <img src="img/blockchain_analytics.png" alt="Alat Analitik Blockchain" class="w-full h-48 object-cover rounded-lg mb-4 border border-dark-border">
+                    <h3 class="font-heading text-2xl font-semibold text-secondary-purple mb-3">Alat Analitik Blockchain</h3>
+                    <p class="text-text-light mb-4 text-md">Dasbor analitik canggih yang menyediakan data dan wawasan *real-time* tentang transaksi blockchain dan tren pasar untuk pengambilan keputusan yang terinformasi dan investasi strategis.</p>
+                    <a href="#" class="learn-more-btn text-accent-cyan hover:underline font-medium flex items-center justify-end group text-lg"
+                       data-title="Alat Analitik Blockchain"
+                       data-description="Dapatkan keunggulan kompetitif dengan Alat Analitik Blockchain CryptoFlow yang kuat. Dasbor kami menyediakan wawasan *real-time* yang mendalam tentang tren pasar, aktivitas on-chain, dan pergerakan *whale* besar. Visualisasikan data melalui grafik dan bagan yang intuitif, membantu Anda membuat keputusan yang terinformasi untuk strategi perdagangan dan investasi Anda. Identifikasi pola yang muncul, pantau aliran transaksi, dan pahami sentimen pasar dengan kejelasan yang tak tertandingi.">Pelajari Lebih Lanjut <svg class="w-5 h-5 ml-2 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></a>
+                </div>
+                <div class="bg-dark-bg p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 border-2 border-dark-border transform hover:-translate-y-2 hover:scale-102 custom-glow-on-hover">
+                    <img src="img/cross_chain_bridge.png" alt="Jembatan Lintas-Rantai" class="w-full h-48 object-cover rounded-lg mb-4 border border-dark-border">
+                    <h3 class="font-heading text-2xl font-semibold text-secondary-purple mb-3">Jembatan Lintas-Rantai</h3>
+                    <p class="text-text-light mb-4 text-md">Memfasilitasi transfer aset yang mulus dan aman antar jaringan blockchain yang berbeda, meningkatkan interoperabilitas dan memperluas jangkauan Anda di seluruh ekosistem terdesentralisasi.</p>
+                    <a href="#" class="learn-more-btn text-accent-cyan hover:underline font-medium flex items-center justify-end group text-lg"
+                       data-title="Jembatan Lintas-Rantai"
+                       data-description="Rasakan interoperabilitas sejati dengan Jembatan Lintas-Rantai CryptoFlow yang kuat. Solusi kami memungkinkan transfer aset dan data digital yang aman dan efisien antar jaringan blockchain yang berbeda, seperti Ethereum, Binance Smart Chain, dan Polygon. Hancurkan batasan ekosistem blockchain dan manfaatkan fitur terbaik dari setiap rantai. Jembatan kami dirancang dengan langkah-langkah keamanan canggih untuk memastikan integritas dan keamanan transaksi lintas-rantai Anda.">Pelajari Lebih Lanjut <svg class="w-5 h-5 ml-2 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></a>
+                </div>
+                <div class="bg-dark-bg p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 border-2 border-dark-border transform hover:-translate-y-2 hover:scale-102 custom-glow-on-hover">
+                    <img src="img/crypto_education.png" alt="Pusat Edukasi Kripto" class="w-full h-48 object-cover rounded-lg mb-4 border border-dark-border">
+                    <h3 class="font-heading text-2xl font-semibold text-secondary-purple mb-3">Pusat Edukasi Kripto</h3>
+                    <p class="text-text-light mb-4 text-md">Platform pembelajaran komprehensif yang menawarkan kursus, artikel, dan webinar untuk mengedukasi pengguna tentang teknologi blockchain dan investasi mata uang kripto, memberdayakan keputusan yang terinformasi.</p>
+                    <a href="#" class="learn-more-btn text-accent-cyan hover:underline font-medium flex items-center justify-end group text-lg"
+                       data-title="Pusat Edukasi Kripto"
+                       data-description="Mulailah perjalanan Anda ke dunia mata uang kripto dengan Pusat Edukasi CryptoFlow yang komprehensif. Baik Anda seorang pemula atau penggemar berpengalaman, platform kami menawarkan banyak sumber daya termasuk artikel mendalam, kursus interaktif, webinar langsung, dan wawasan ahli. Pelajari tentang dasar-dasar blockchain, strategi perdagangan, DeFi, NFT, dan banyak lagi, semuanya dirancang untuk memberdayakan Anda dengan pengetahuan yang dibutuhkan untuk menavigasi ruang aset digital dengan percaya diri.">Pelajari Lebih Lanjut <svg class="w-5 h-5 ml-2 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></a>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="message-us" class="animated-section bg-dark-card p-8 md:p-12 rounded-3xl shadow-2xl mb-16 border border-dark-border animate-fade-in-up">
+            <h2 class="font-heading text-4xl font-bold text-center text-primary-purple mb-10">Hubungi Kami</h2>
+            
+            <div class="flex flex-col lg:flex-row gap-10">
+                <div class="lg:w-1/2 bg-dark-bg p-8 rounded-xl shadow-lg border border-dark-border custom-glow-on-focus-within">
+                    <h3 class="font-heading text-2xl font-semibold text-secondary-purple mb-6">Kirimkan Pesan</h3>
+                    <form id="messageForm" class="space-y-6">
+                        <div>
+                            <label for="nama" class="block text-lg font-medium text-text-light mb-2">Nama Lengkap</label>
+                            <input type="text" id="nama" name="nama" placeholder="Edward Hidayat"
+                                class="mt-1 block w-full px-5 py-3 border border-dark-border rounded-lg shadow-sm bg-gray-700 text-text-light placeholder-gray-400 focus:ring-primary-purple focus:border-primary-purple focus:ring-2 sm:text-md transition duration-200">
+                        </div>
+                        <div>
+                            <label for="tanggalLahir" class="block text-lg font-medium text-text-light mb-2">Tanggal Lahir</label>
+                            <input type="date" id="tanggalLahir" name="tanggalLahir" value="2023-04-02"
+                                class="mt-1 block w-full px-5 py-3 border border-dark-border rounded-lg shadow-sm bg-gray-700 text-text-light focus:ring-primary-purple focus:border-primary-purple focus:ring-2 sm:text-md transition duration-200">
+                        </div>
+                        <div>
+                            <label class="block text-lg font-medium text-text-light mb-2">Jenis Kelamin</label>
+                            <div class="mt-2 space-x-8 flex">
+                                <label class="inline-flex items-center group">
+                                    <input type="radio" name="jenisKelamin" value="Laki-Laki" class="form-radio text-primary-purple h-6 w-6 focus:ring-primary-purple transition duration-200 transform group-hover:scale-110">
+                                    <span class="ml-3 text-text-light text-lg">Laki-Laki</span>
+                                </label>
+                                <label class="inline-flex items-center group">
+                                    <input type="radio" name="jenisKelamin" value="Perempuan" class="form-radio text-primary-purple h-6 w-6 focus:ring-primary-purple transition duration-200 transform group-hover:scale-110">
+                                    <span class="ml-3 text-text-light text-lg">Perempuan</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="pesan" class="block text-lg font-medium text-text-light mb-2">Pesan Anda</label>
+                            <textarea id="pesan" name="pesan" rows="5" placeholder="Tulis pesan Anda di sini..."
+                                class="mt-1 block w-full px-5 py-3 border border-dark-border rounded-lg shadow-sm bg-gray-700 text-text-light placeholder-gray-400 focus:ring-primary-purple focus:border-primary-purple focus:ring-2 sm:text-md transition duration-200"></textarea>
+                        </div>
+                        <div>
+                            <button type="submit"
+                                class="w-full bg-primary-purple text-white py-4 px-6 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-primary-purple focus:ring-offset-2 text-xl font-semibold transition duration-300 transform hover:scale-105 shadow-xl custom-glow">
+                                Kirim Pesan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="lg:w-1/2 bg-dark-bg p-8 rounded-xl shadow-lg border border-dark-border flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-heading text-2xl font-semibold text-secondary-purple mb-6 border-b border-dark-border pb-3">Detail Pengiriman Formulir</h3>
+                        <p class="text-text-light mb-4 text-lg"><span class="font-medium text-primary-purple">Waktu Saat Ini:</span> <span id="currentTime">Memuat...</span></p>
+                        <hr class="my-4 border-dark-border">
+                        <div id="submittedDetails" class="space-y-3 text-lg">
+                            <p class="text-text-light"><span class="font-medium text-primary-purple">Nama:</span> <span id="displayNama">N/A</span></p>
+                            <p class="text-text-light"><span class="font-medium text-primary-purple">Tanggal Lahir:</span> <span id="displayTanggalLahir">N/A</span></p>
+                            <p class="text-text-light"><span class="font-medium text-primary-purple">Jenis Kelamin:</span> <span id="displayJenisKelamin">N/A</span></p>
+                            <p class="text-text-light"><span class="font-medium text-primary-purple">Pesan:</span> <span id="displayPesan">N/A</span></p>
+                        </div>
+                    </div>
+                    <div class="mt-8 text-center">
+                        <p class="text-text-dark text-md">Kami akan segera menghubungi Anda!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-900 text-text-dark py-8 mt-12 border-t border-dark-border">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 CryptoFlow. Hak Cipta Dilindungi.</p>
+            <p class="mt-2 text-sm text-text-dark/70">Dibuat oleh Edward Hidayat</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

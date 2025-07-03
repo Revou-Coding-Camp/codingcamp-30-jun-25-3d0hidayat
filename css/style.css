@@ -1,0 +1,143 @@
+/* css/style.css */
+
+/* Animasi kustom untuk putaran lambat */
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 10s linear infinite; /* 10 detik per putaran */
+}
+
+/* Animasi kedip kursor mesin tik */
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: white }
+}
+
+.typewriter-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.1em;
+    background-color: white; /* Warna kursor */
+    animation: blink-caret 0.75s step-end infinite;
+    vertical-align: middle;
+    margin-left: 2px;
+}
+
+/* Gaya dasar untuk bagian yang dianimasikan - ini tersembunyi secara default */
+.animated-section {
+    opacity: 0;
+    transform: translateY(20px); /* Mulai sedikit di bawah posisi akhir */
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Kelas untuk diterapkan saat bagian terlihat */
+.animated-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Efek glow kustom untuk tombol/kartu */
+.custom-glow {
+    box-shadow: 0 0 5px rgba(139, 92, 246, 0.5), 0 0 15px rgba(139, 92, 246, 0.3), 0 0 30px rgba(139, 92, 246, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.custom-glow:hover {
+    box-shadow: 0 0 10px rgba(167, 139, 250, 0.7), 0 0 25px rgba(167, 139, 250, 0.5), 0 0 50px rgba(167, 139, 250, 0.3);
+}
+
+.custom-glow-sm {
+    box-shadow: 0 0 3px rgba(139, 92, 246, 0.4), 0 0 8px rgba(139, 92, 246, 0.2);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.custom-glow-sm:hover {
+    box-shadow: 0 0 6px rgba(167, 139, 250, 0.6), 0 0 15px rgba(167, 139, 250, 0.4);
+}
+
+
+/* Efek glowing kustom saat hover untuk kartu/div */
+.custom-glow-on-hover {
+    position: relative;
+    overflow: hidden; /* Diperlukan untuk pseudo-element */
+}
+
+/* Pseudo-element untuk efek glow border */
+.custom-glow-on-hover::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        from 0deg,
+        transparent 0%,
+        rgba(139, 92, 246, 0.5) 20%, /* Ungu Utama */
+        rgba(167, 139, 250, 0.5) 40%, /* Ungu Sekunder */
+        transparent 60%,
+        transparent 100%
+    );
+    z-index: 0;
+    animation: spin 4s linear infinite; /* Animasi untuk glow */
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.custom-glow-on-hover:hover::before {
+    opacity: 1;
+}
+
+/* Memastikan konten berada di atas pseudo-element */
+.custom-glow-on-hover > * {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Glow kustom saat fokus di dalam form */
+.custom-glow-on-focus-within:focus-within {
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.7), 0 0 25px rgba(139, 92, 246, 0.5), 0 0 50px rgba(139, 92, 246, 0.3);
+    border-color: #8b5cf6; /* Ungu utama */
+    transition: box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+/* Glow teks saat hover di Navbar */
+.glow-on-hover {
+    text-shadow: 0 0 5px transparent;
+    transition: text-shadow 0.3s ease-in-out;
+}
+
+.glow-on-hover:hover {
+    text-shadow: 0 0 8px rgba(167, 139, 250, 0.8), 0 0 15px rgba(167, 139, 250, 0.4);
+}
+
+/* Latar belakang kustom untuk body */
+.custom-gradient-bg {
+    background: linear-gradient(135deg, #0f0e1f, #1a1a2e, #0f0e1f); /* Gradien linear dasar */
+    background-size: 400% 400%; /* Ukuran latar belakang lebih besar untuk memungkinkan pergeseran */
+    animation: gradient-shift-bg 15s ease infinite alternate; /* Terapkan animasi */
+}
+
+/* Penyesuaian untuk warna teks pada bidang input */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1); /* Membuat ikon kalender berwarna putih */
+}
+input[type="date"] {
+    color-scheme: dark; /* Untuk styling date picker mode gelap */
+}
