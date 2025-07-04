@@ -1,0 +1,41 @@
+# Proyek Mini Website Profil Perusahaan CryptoFlow
+
+## Gambaran Umum Proyek
+
+Proyek ini adalah implementasi website profil perusahaan fiktif bernama **CryptoFlow**, yang berfokus pada solusi aset digital dan teknologi blockchain. Website ini dirancang untuk menjadi halaman tunggal (one-page website) yang menarik, interaktif, dan responsif, menampilkan informasi penting tentang perusahaan, portofolio solusi, dan formulir kontak untuk stakeholder.
+
+Desain website telah ditingkatkan dari tampilan dasar menjadi lebih modern dan premium, dengan sentuhan tema hitam-ungu, efek visual dinamis, serta interaksi pengguna yang halus.
+
+## Fitur-Fitur Utama
+
+* **Desain Modern & Premium:** Tampilan yang menarik dengan gradasi warna, efek cahaya (glow), animasi, dan tipografi modern.
+* **Website Halaman Tunggal (One-Page Layout):** Semua informasi utama dapat diakses dalam satu halaman dengan navigasi yang mulus.
+* **Navigasi Interaktif:** Navbar sticky dengan efek *blur* dan transisi hover yang halus.
+* **Pop-up Sambutan Interaktif:** Pop-up akan muncul pertama kali saat pengguna mengunjungi situs untuk menanyakan nama, yang kemudian akan ditampilkan di halaman beranda dengan efek mesin tik.
+* **Bagian Profil Perusahaan:** Menampilkan `photo banner`, `about the company`, dan `vision and mission` perusahaan CryptoFlow.
+* **Bagian Kantor Pusat:** Menampilkan lokasi kantor pusat dengan gambar interaktif.
+* **Bagian Portofolio Solusi:** Menampilkan berbagai produk dan layanan inovatif CryptoFlow.
+    * Setiap item portofolio memiliki tombol "Pelajari Lebih Lanjut" yang menampilkan pop-up detail informasi proyek.
+* **Formulir "Hubungi Kami":** Formulir untuk mengumpulkan informasi dan pertanyaan dari stakeholder, dilengkapi dengan validasi JavaScript.
+* **Notifikasi Pop-up Kustom:** Mengganti `alert()` bawaan browser dengan pop-up yang stylish untuk pesan sukses, peringatan, dan error, serta informasi portofolio.
+* **Waktu Saat Ini Dinamis:** Menampilkan waktu saat ini yang selalu terbarui di bagian formulir.
+* **Animasi Scroll:** Bagian-bagian website akan muncul dengan animasi lembut saat pengguna menggulir halaman.
+* **Desain Responsif:** Tampilan website dioptimalkan untuk perangkat desktop dan mobile (dilengkapi dengan menu hamburger untuk mobile).
+
+## Teknologi yang Digunakan
+
+* **HTML5:** Untuk struktur konten website.
+* **CSS3:** Untuk styling dan layout.
+    * **Tailwind CSS:** Framework CSS utility-first untuk mempercepat styling.
+    * **CSS Kustom:** Untuk animasi kompleks, gradasi, dan efek visual yang lebih unik.
+* **JavaScript (Vanilla JS):** Untuk interaktivitas, validasi formulir, efek pop-up, efek mesin tik, dan animasi berbasis scroll.
+* **Google Fonts:** Untuk kustomisasi tipografi (`Poppins` dan `Oxanium`).
+
+## Catatan Penting untuk Pengembangan
+
+* **Pembersihan Local Storage:** Jika Anda mengalami masalah dengan pop-up nama sambutan yang tidak muncul di awal, pastikan untuk menghapus item `websiteUserName` dari `Local Storage` browser Anda (melalui Developer Tools -> Application/Aplikasi -> Local Storage) lalu lakukan hard refresh.
+* **Autentikasi GitHub:** Jika mengalami masalah `Authentication failed` saat `git push`, pastikan Anda menggunakan [Personal Access Token (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) sebagai pengganti kata sandi akun GitHub Anda.
+
+---
+
+Edward Hidayat.
